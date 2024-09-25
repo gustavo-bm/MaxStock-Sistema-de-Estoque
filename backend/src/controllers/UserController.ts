@@ -60,4 +60,3 @@ userRouter.delete('/:id', async (req: Request, res: Response): Promise<Response>
 export default userRouter;
 
 
-

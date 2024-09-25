@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import { DataSource } from "typeorm";
-import { CreateUsersTable1727202813212 } from './migrations/1727202813212-CreateUsersTable';
+import { CreateUsersTable1727265827543 } from './migrations/1727265827543-CreateUsersTable';
 import User from "../entities/User";
 import dotenv from 'dotenv';
 
@@ -17,6 +17,6 @@ export const AppDataSource = new DataSource({
     synchronize: true,
     logging: false,
     entities: [User],
-    migrations: [CreateUsersTable1727202813212],
+    migrations: [CreateUsersTable1727265827543],
     subscribers: [],
 });
