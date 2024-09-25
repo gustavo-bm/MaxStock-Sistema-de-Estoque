@@ -1,8 +1,17 @@
-import { useState } from 'react'
-import './App.css'
+import { useEffect, useState } from 'react';
+import './App.css';
+import { getUsers } from './services/UserService';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      const userList = await getUsers();
+      setUsers(userList);
+    };
+    fetchUsers();
+  }, []);
 
   return (
     <>
@@ -12,6 +21,14 @@ function App() {
           editar e remover projetos e tarefas de um 
           usuário, controlando o status das tarefas e projetos.
         </p>
+      </div>
+      <h2>Lista de usuários:</h2>
+      <div>
+        <ul>
+          {users.map((user: any) => (
+            <li key={user.id}>{user.name} - {user.email}</li>
+          ))}
+        </ul>
       </div>
     </>
   )
