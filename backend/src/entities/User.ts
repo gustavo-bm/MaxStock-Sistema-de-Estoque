@@ -16,6 +16,15 @@ import {
   
       @Column('varchar', { length: 100, nullable: false })
       email: string;
+
+      @Column('varchar', { length: 100, nullable: false })
+      password: string;
+  
+      @CreateDateColumn()
+      created_at: Date;
+
+      @UpdateDateColumn()
+      updated_at: Date;
   }
   
   export default User;

@@ -20,3 +20,16 @@ export const AppDataSource = new DataSource({
     migrations: [CreateUsersTable1727265827543],
     subscribers: [],
 });
+
+// Função assíncrona para inicializar o DataSource
+async function initializeDataSource() {
+    try {
+        await AppDataSource.initialize();
+        console.log("Data Source has been initialized!");
+    } catch (error) {
+        console.error("Error during Data Source initialization:", error);
+    }
+}
+
+// Chamar a função para inicializar o DataSource
+initializeDataSource();

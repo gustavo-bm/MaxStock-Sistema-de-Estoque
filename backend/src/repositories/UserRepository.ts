@@ -9,6 +9,11 @@ const getUsers = (): Promise<IUser[]> => {
     return userRepository.find();
 }
 
+const getUserByEmail = async (email: string): Promise<User | null> => {
+    const user = await userRepository.findOneBy({ email });
+    return user || null;
+}
+
 // Método para criar um usuário
 const createUser = async (userData: IUser): Promise<IUser> => {
     const newUser = userRepository.create(userData); // Cria uma instância do usuário
@@ -39,7 +44,7 @@ const deleteUser = async (id: number): Promise<boolean> => {
     return true;
 }
 
-export default { getUsers, createUser, updateUser, deleteUser };
+export default { getUsers, getUserByEmail, createUser, updateUser, deleteUser };
 
 
 
