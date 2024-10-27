@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import './App.css';
 import { getUsers } from './services/UserService';
+import { Route, Routes } from 'react-router-dom';
+import LoginPage from './pages/LoginPage';
 
 function App() {
   const [users, setUsers] = useState([]);
@@ -15,21 +17,9 @@ function App() {
 
   return (
     <>
-      <h1>Sistema de gerenciamento de Projetos.</h1>
-      <div className="card">
-        <p>Registrar, visualizar,
-          editar e remover projetos e tarefas de um 
-          usuário, controlando o status das tarefas e projetos.
-        </p>
-      </div>
-      <h2>Lista de usuários:</h2>
-      <div>
-        <ul>
-          {users.map((user: any) => (
-            <li key={user.id}>{user.name} - {user.email}</li>
-          ))}
-        </ul>
-      </div>
+      <Routes>
+        <Route path="/" element={<LoginPage />} />
+      </Routes>
     </>
   )
 }
