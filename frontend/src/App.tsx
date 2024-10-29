@@ -1,26 +1,18 @@
-import { useEffect, useState } from 'react';
 import './App.css';
-import { getUsers } from './services/UserService';
 import { Route, Routes } from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
+import UserProfilePage from './pages/UserProfilePage';
 
 function App() {
-  const [users, setUsers] = useState([]);
-
-  useEffect(() => {
-    const fetchUsers = async () => {
-      const userList = await getUsers();
-      setUsers(userList);
-    };
-    fetchUsers();
-  }, []);
 
   return (
-    <>
-      <Routes>
-        <Route path="/" element={<LoginPage />} />
-      </Routes>
-    </>
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/app" element={<UserProfilePage />} />
+        </Routes>
+
   )
 }
 

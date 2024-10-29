@@ -9,9 +9,19 @@ const getUsers = async () => {
     return response.data;
 }
 
-const createUser = async (userData: { name: string, email: string }) => {
+const createUser = async (userData: { name: string, email: string, password: string }) => {
     const response = await api.post('/users', userData);
     return response.data;
+}
+
+const login = async (email: string, password: string): Promise<string> => {
+    try {
+        const response = await api.post('/users/login', { email, password });
+        return response.data.token;
+    } catch (error) {
+        console.error("Erro ao fazer login", error);
+        throw error;
+    }
 }
 
 const updateUser = async (id: number, userData: { name: string, email:string }) => {
@@ -24,4 +34,4 @@ const deleteUser = async (id: number) => {
     return response.data;
 }
 
-export { getUsers, createUser, updateUser, deleteUser };
+export { getUsers, createUser, login, updateUser, deleteUser };

@@ -1,30 +1,27 @@
-import { Button, FormLabel, Paper, TextField } from "@mui/material";
-import { useState } from "react";
-import { login } from "../../services/UserService";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Button, FormLabel, Paper, TextField } from '@mui/material';
+import React, { useState } from 'react';
+import { createUser } from '../../services/UserService';
 
-interface LoginError {
+interface RegisterError {
     message: string;
 }
 
-const LoginForm: React.FC = () => {
+const RegisterForm: React.FC = () => {
+    const [name, setName] = useState<string>("");
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [error, setError] = useState<string>("");
-
-    const navigate = useNavigate();
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
         try {
-            const token = await login(email, password);
-            console.log("Token recebido:", token);
-            localStorage.setItem('token', token);
-            navigate('/app'); // Redireciona para a aplicação após o login bem-sucedido
+            const userData = { name, email, password };
+            await createUser(userData);
+            console.log("Usuário criado com sucesso!");
         } catch (error: any) {
-            console.error("Erro ao fazer login:", error.response || error);
-            setError(error.response?.data.message || "Erro ao fazer login. Verifique suas credenciais.");
+            setError(error.message || "Erro ao criar usuário. Verifique os dados e tente novamente.");
+            console.error("Erro ao criar usuário:", error);
         }
     }
 
@@ -35,6 +32,13 @@ const LoginForm: React.FC = () => {
         >
             <FormLabel sx={{ display: "flex", flexDirection: "column", gap: "2em" }}>
                 <form onSubmit={handleSubmit}>
+                    <TextField
+                        fullWidth
+                        variant="outlined"
+                        label="Name"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                    />
                     <TextField
                         fullWidth
                         variant="outlined"
@@ -56,16 +60,6 @@ const LoginForm: React.FC = () => {
                         variant="contained"
                         color="primary"
                     >
-                        Sign In
-                    </Button>
-                    <p>- Don't have an account? - </p>
-                    <Button
-                        fullWidth
-                        type="button"
-                        variant="contained"
-                        color="primary"
-                        onClick={() => navigate('/register')}
-                    >
                         Sign Up
                     </Button>
                     {error && <p style={{ color: 'red' }}>{error}</p>}
@@ -75,4 +69,4 @@ const LoginForm: React.FC = () => {
     );
 };
 
-export default LoginForm;
+export default RegisterForm;
