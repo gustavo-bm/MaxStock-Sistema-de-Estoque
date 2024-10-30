@@ -2,6 +2,7 @@ import { Button, FormLabel, Paper, TextField } from "@mui/material";
 import { useState } from "react";
 import { login } from "../../services/UserService";
 import { Navigate, useNavigate } from "react-router-dom";
+import { useAuth } from "../../contexts/AuthContext";
 
 interface LoginError {
     message: string;
@@ -12,6 +13,7 @@ const LoginForm: React.FC = () => {
     const [password, setPassword] = useState<string>("");
     const [error, setError] = useState<string>("");
 
+    const auth = useAuth();
     const navigate = useNavigate();
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -19,8 +21,12 @@ const LoginForm: React.FC = () => {
 
         try {
             const token = await login(email, password);
-            console.log("Token recebido:", token);
+
+            auth?.login(); // Função de autenticação para permissões de acesso de rotas da aplicação
+
             localStorage.setItem('token', token);
+            
+            console.log('User logged sucessfully. Token received: ', token);
             navigate('/app'); // Redireciona para a aplicação após o login bem-sucedido
         } catch (error: any) {
             console.error("Erro ao fazer login:", error.response || error);

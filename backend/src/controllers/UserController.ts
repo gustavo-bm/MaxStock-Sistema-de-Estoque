@@ -6,6 +6,9 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 
+// Carregar variáveis de ambiente do arquivo .env
+dotenv.config();
+
 // Gestor de rotas
 const userRouter = Router();
 
@@ -61,6 +64,21 @@ userRouter.post('/login', async (req: Request, res: Response): Promise<Response>
     }
 });
 
+// Rota POST para verificar um token de sessão
+userRouter.post('/verify-token', (req: Request, res: Response) => {
+    const token = req.body.token;
+
+    if (!token) {
+        return res.status(400).json({ message: "Token não fornecido" });
+    }
+
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        return res.status(200).json({ valid: true, decoded });
+    } catch (error) {
+        return res.status(401).json({ valid: false, message: "Token inválido ou expirado" });
+    }
+})
 
 // Rota para atualizar um usuário
 userRouter.put('/:id', async (req: Request, res: Response): Promise<Response> => {

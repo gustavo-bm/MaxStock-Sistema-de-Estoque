@@ -24,6 +24,16 @@ const login = async (email: string, password: string): Promise<string> => {
     }
 }
 
+const verifyToken = async (token: string): Promise<boolean> => {
+    try {
+        const response = await api.post('/users/verify-token', { token });
+        return response.data.valid;
+    } catch (error) {
+        console.error("Erro ao verificar o token", error);
+        return false;
+    }
+}
+
 const updateUser = async (id: number, userData: { name: string, email:string }) => {
     const response = await api.put(`/users/${id}`, userData);
     return response.data;
@@ -34,4 +44,4 @@ const deleteUser = async (id: number) => {
     return response.data;
 }
 
-export { getUsers, createUser, login, updateUser, deleteUser };
+export { getUsers, createUser, login, verifyToken, updateUser, deleteUser };

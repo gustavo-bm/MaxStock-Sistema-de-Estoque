@@ -1,10 +1,11 @@
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import * as jwt_decode from  'jwt-decode';
+import { verifyToken } from "../services/UserService";
 
 interface AuthContextType {
     isAuthenticated: boolean;
-    logout: () => void;
+    login: () => void;
+    logout: () => boolean;
 }
 
 interface AuthProviderProps {
@@ -18,32 +19,45 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const token = localStorage.getItem('token');
-        if (token) {
-            try {
-                const decodedToken: any = (jwt_decode as any)(token);
-                const currentTime = Date.now() / 1000;
+        const checkToken = async () => {
+            const token = localStorage.getItem('token');
 
-                if (decodedToken.exp > currentTime) {
-                    setIsAuthenticated(true)
+            if (token) {
+                const isValid = await  verifyToken(token);
+
+                if (isValid) {
+                    setIsAuthenticated(true);
+                    navigate('/app');
                 } else {
                     logout();
                 }
-            } catch (error) {
-                console.error("Erro ao decodificar o token:", error);
-                logout();
             }
         }
+        checkToken();
     }, []);
 
-    const logout = () => {
-        localStorage.removeItem('token');
-        setIsAuthenticated(false);
-        navigate('/login');
+    const login = () => {
+        try {
+            setIsAuthenticated(true);
+        } catch (error) {
+            console.error("Erro ao realizar login:", error);
+        }
     }
 
+    const logout = (): boolean => {
+        try {
+            localStorage.removeItem('token');
+            setIsAuthenticated(false);
+            navigate('/login');
+            return true;
+        } catch (error) {
+            console.error("Erro ao realizar logout:", error);
+            return false;
+        }
+    };
+
     return (
-        <AuthContext.Provider value={{ isAuthenticated, logout }}>
+        <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
             {children}
         </AuthContext.Provider>
     )
