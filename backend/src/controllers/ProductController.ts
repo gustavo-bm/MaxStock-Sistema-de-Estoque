@@ -1,11 +1,12 @@
 import { Request, Response, Router } from "express";
 import IProduct from "../interfaces/Product/IProduct";
 import ProductRepository from "../repositories/ProductRepository";
+import Product from "../entities/Product";
 
 const productRouter = Router();
 
 // Lista todos os produtos
-productRouter.get("/", async (req: Request, res: Response) => {
+productRouter.get('/', async (req: Request, res: Response) => {
   try {
     const products = await ProductRepository.getProducts();
     return res.status(200).json(products);
@@ -16,7 +17,7 @@ productRouter.get("/", async (req: Request, res: Response) => {
 });
 
 // Catalogar novo produto
-productRouter.post("/", async (req: Request, res: Response) => {
+productRouter.post('/', async (req: Request, res: Response) => {
   const { image, name, description, price }: IProduct = req.body;
 
   // Verifica se os dados necessários foram enviados
@@ -36,5 +37,36 @@ productRouter.post("/", async (req: Request, res: Response) => {
     return res.status(500).json({ message: "Erro ao criar product", error });
   }
 });
+
+// Atualizar os campos de um produto
+productRouter.patch('/:product_id', async (req: Request, res: Response) => {
+  const product_id = parseInt(req.params.product_id, 10);
+  const updates: Partial<Product> = req.body;
+
+  if (updates.quantity !== undefined && (isNaN(updates.quantity) || updates.quantity < 0)) {
+      return res.status(400).json({ message: "Quantidade inválida" });
+  }
+
+  if (updates.name !== undefined && typeof updates.name !== 'string') {
+      return res.status(400).json({ message: "Nome inválido" });
+  }
+
+  if (updates.description !== undefined && typeof updates.description !== 'string') {
+    return res.status(400).json({ message: "Descrição inválida" });
+  }
+
+  try {
+      const updatedProduct = await ProductRepository.updateProduct(product_id, updates);
+      return res.status(200).json(updatedProduct);
+  } catch (error) {
+      console.error("Erro ao atualizar produto:", error);
+
+      if (error.message === "Produto não encontrado") {
+          return res.status(404).json({ message: "Produto não encontrado" });
+      }
+      return res.status(500).json({ message: "Erro ao atualizar produto", error });
+  }
+});
+
 
 export default productRouter;

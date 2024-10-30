@@ -7,13 +7,28 @@ const productRepository = AppDataSource.getRepository(Product);
 // Retorna lista de produtos
 const getProducts = (): Promise<IProduct[]> => {
     return productRepository.find();
-}
+};
 
 // Criar novo produto
 const createProduct = async (ProductData: IProduct): Promise<Product> => {
     const newProduct = productRepository.create(ProductData);
     await productRepository.save(newProduct);
     return newProduct;
-}
+};
 
-export default { getProducts, createProduct };
+// Atualiza campos do produto
+const updateProduct = async (product_id: number, updates: Partial<Product>): Promise<Product> => {
+    const product = await productRepository.findOne({ where: { id: product_id } });
+
+    if (!product) {
+        throw new Error("Produto não encontrado");
+    }
+
+    // Atualiza os campos do produto com os valores fornecidos
+    Object.assign(product, updates);
+    await productRepository.save(product);
+
+    return product;
+};
+
+export default { getProducts, createProduct, updateProduct };
