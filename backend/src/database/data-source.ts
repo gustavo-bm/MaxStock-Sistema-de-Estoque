@@ -3,6 +3,8 @@ import { DataSource } from "typeorm";
 import { CreateUsersTable1727265827543 } from './migrations/1727265827543-CreateUsersTable';
 import User from "../entities/User";
 import dotenv from 'dotenv';
+import Product from "../entities/Product";
+import { CreateProductsTable1730304442738 } from "./migrations/1730304442738-CreateProductsTable";
 
 // Carregar variáveis de ambiente do arquivo .env
 dotenv.config();
@@ -16,8 +18,8 @@ export const AppDataSource = new DataSource({
     database: process.env.DB_DATABASE,
     synchronize: true,
     logging: false,
-    entities: [User],
-    migrations: [CreateUsersTable1727265827543],
+    entities: [User, Product],
+    migrations: [CreateUsersTable1727265827543, CreateProductsTable1730304442738],
     subscribers: [],
 });
 

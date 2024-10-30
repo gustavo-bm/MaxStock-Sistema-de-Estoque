@@ -1,7 +1,7 @@
 import { Button, FormLabel, Paper, TextField } from "@mui/material";
 import { useState } from "react";
 import { login } from "../../services/UserService";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 
 interface LoginError {
@@ -22,7 +22,8 @@ const LoginForm: React.FC = () => {
         try {
             const token = await login(email, password);
 
-            auth?.login(); // Função de autenticação para permissões de acesso de rotas da aplicação
+            // Função de autenticação para permissões de acesso a rotas da aplicação, também carrega as informações do usuário
+            await auth?.login(email);
 
             localStorage.setItem('token', token);
             

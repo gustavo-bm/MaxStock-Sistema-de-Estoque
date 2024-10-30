@@ -2,6 +2,7 @@
 
 import { Button } from "@mui/material";
 import { useAuth } from "../contexts/AuthContext"
+import UserInfos from "../components/profile/UserInfos";
 
 export default function UserProfilePage() {
   const auth = useAuth();
@@ -22,6 +23,7 @@ export default function UserProfilePage() {
       <Button onClick={handleLogout}>
         Logout
       </Button>
+      <UserInfos />
     </div>
   )
 }

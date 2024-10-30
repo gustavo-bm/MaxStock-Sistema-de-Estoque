@@ -5,8 +5,13 @@ const api = axios.create({
 });
 
 const getUsers = async () => {
-    const response = await api.get('/users');
-    return response.data;
+    const users = await api.get('/users');
+    return users.data;
+}
+
+const getUserInfo = async (email: string) => {
+    const user = await api.get('/users', { params: { email }});
+    return user.data;
 }
 
 const createUser = async (userData: { name: string, email: string, password: string }) => {
@@ -44,4 +49,4 @@ const deleteUser = async (id: number) => {
     return response.data;
 }
 
-export { getUsers, createUser, login, verifyToken, updateUser, deleteUser };
+export { getUsers, getUserInfo, createUser, login, verifyToken, updateUser, deleteUser };

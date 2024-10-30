@@ -1,11 +1,18 @@
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { verifyToken } from "../services/UserService";
+import { getUserInfo, verifyToken } from "../services/UserService";
+
+interface User {
+    id: number;
+    name: string;
+    email: string;
+}
 
 interface AuthContextType {
     isAuthenticated: boolean;
-    login: () => void;
+    login: (email: string) => Promise<void>;
     logout: () => boolean;
+    user: User | null;
 }
 
 interface AuthProviderProps {
@@ -16,6 +23,7 @@ const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+    const [user, setUser] = useState<User | null>(null);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -36,11 +44,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         checkToken();
     }, []);
 
-    const login = () => {
+    const login = async (email: string) => {
         try {
+            // Chama a função para buscar as informações do usuário
+            const userInfo = await getUserInfo(email);
+            setUser(userInfo);
             setIsAuthenticated(true);
+            navigate('/app');
         } catch (error) {
-            console.error("Erro ao realizar login:", error);
+            console.error("Erro ao buscar informações do usuário:", error);
         }
     }
 
@@ -57,7 +69,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+        <AuthContext.Provider value={{ isAuthenticated, login, logout, user }}>
             {children}
         </AuthContext.Provider>
     )
