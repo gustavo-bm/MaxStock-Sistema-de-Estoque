@@ -18,7 +18,7 @@ productRouter.get('/', async (req: Request, res: Response) => {
 
 // Catalogar novo produto
 productRouter.post('/', async (req: Request, res: Response) => {
-  const { image, name, description, price }: IProduct = req.body;
+  const { image, name, description, price, quantity }: IProduct = req.body;
 
   // Verifica se os dados necessários foram enviados
   if (!name || !price) {
@@ -31,6 +31,7 @@ productRouter.post('/', async (req: Request, res: Response) => {
       name,
       description,
       price,
+      quantity
     });
     return res.status(201).json(newProduct);
   } catch (error) {
@@ -43,6 +44,8 @@ productRouter.patch('/:product_id', async (req: Request, res: Response) => {
   const product_id = parseInt(req.params.product_id, 10);
   const updates: Partial<Product> = req.body;
 
+  console.log("Dados recebidos para atualização:", updates); // Adicionando log
+
   if (updates.quantity !== undefined && (isNaN(updates.quantity) || updates.quantity < 0)) {
       return res.status(400).json({ message: "Quantidade inválida" });
   }
@@ -52,21 +55,36 @@ productRouter.patch('/:product_id', async (req: Request, res: Response) => {
   }
 
   if (updates.description !== undefined && typeof updates.description !== 'string') {
-    return res.status(400).json({ message: "Descrição inválida" });
+      return res.status(400).json({ message: "Descrição inválida" });
   }
 
   try {
       const updatedProduct = await ProductRepository.updateProduct(product_id, updates);
+      if (!updatedProduct) {
+          return res.status(404).json({ message: "Produto não encontrado" });
+      }
       return res.status(200).json(updatedProduct);
   } catch (error) {
       console.error("Erro ao atualizar produto:", error);
 
-      if (error.message === "Produto não encontrado") {
-          return res.status(404).json({ message: "Produto não encontrado" });
-      }
-      return res.status(500).json({ message: "Erro ao atualizar produto", error });
+      return res.status(500).json({ message: "Erro ao atualizar produto", error: error.message });
   }
 });
 
+// Remover um produto
+productRouter.delete(
+  '/:id',
+  async (req: Request, res: Response): Promise<Response> => {
+    const { id } = req.params;
+
+    const deleted = await ProductRepository.deleteProduct(Number(id));
+
+    if (deleted) {
+      return res.status(204).send(); // Retorna "204 No Content" se a exclusão for bem-sucedida
+    } else {
+      return res.status(404).json({ message: "Usuário não encontrado." });
+    }
+  }
+)
 
 export default productRouter;

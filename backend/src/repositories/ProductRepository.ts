@@ -31,4 +31,13 @@ const updateProduct = async (product_id: number, updates: Partial<Product>): Pro
     return product;
 };
 
-export default { getProducts, createProduct, updateProduct };
+const deleteProduct = async (id: number): Promise<boolean> => {
+    const product = await productRepository.findOneBy({ id });
+
+    if (!product) return false;
+
+    await productRepository.remove(product);
+    return true;
+}
+
+export default { getProducts, createProduct, updateProduct, deleteProduct };

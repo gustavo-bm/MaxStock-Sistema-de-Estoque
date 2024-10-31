@@ -1,0 +1,77 @@
+import { createContext, ReactNode, useContext, useState, useCallback, useEffect } from "react";
+import { getProducts, createProduct, updateProductData } from "../services/ProductService";
+
+export default interface Product {
+    id: number;
+    image: string;
+    name: string;
+    description: string;
+    price: number;
+    quantity: number;
+}
+
+interface ProductsContextType {
+    getProductsList: () => Promise<Product[]>;
+    addProduct: (product: Product) => Promise<void>;
+    updateProduct: (product: Product) => Promise<void>;
+    products: Product[] | null;
+}
+
+interface ProductsContextProps {
+    children: ReactNode;
+}
+
+const ProductsContext = createContext<ProductsContextType | null>(null);
+
+export const ProductsProvider: React.FC<ProductsContextProps> = ({ children }) => {
+    const [products, setProducts] = useState<Product[] | null>(null);
+
+    const getProductsList = useCallback(async () => {
+        if (!products) {
+            const fetchedProducts = await getProducts();
+            setProducts(fetchedProducts);
+            return fetchedProducts;
+        }
+        return products;
+    }, [products]);
+
+    const addProduct = useCallback(async (newProduct: Product) => {
+        await createProduct(newProduct);
+        setProducts((prevProducts) => prevProducts ? [...prevProducts, newProduct] : [newProduct]);
+    }, []);
+
+    const updateProduct = useCallback(async (updatedProductInfo: Product) => {
+        const updatedProduct = await updateProductData(updatedProductInfo);
+        
+        if (updatedProduct) {
+            setProducts((prevProducts) => 
+                prevProducts
+                    ? prevProducts.map((product) => 
+                        product.id === updatedProduct.id ? updatedProduct : product
+                      )
+                    : [updatedProduct]
+            );
+        } else {
+            console.error("Failed to update product: Product data is undefined");
+        }
+    }, []);
+    
+
+    useEffect(() => {
+        console.log("Updated products: ", products);
+    }, [products]);
+
+    return (
+        <ProductsContext.Provider value={{ getProductsList, addProduct, updateProduct, products }}>
+            {children}
+        </ProductsContext.Provider>
+    );
+};
+
+export const useProducts = () => {
+    const context = useContext(ProductsContext);
+    if (!context) {
+        throw new Error("useProducts must be used within a ProductsProvider");
+    }
+    return context;
+};

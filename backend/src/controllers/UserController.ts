@@ -13,7 +13,7 @@ dotenv.config();
 const userRouter = Router();
 
 // Rota GET para buscar todos os usuários ou um usuário específico pelo email
-userRouter.get("/", async (req: Request, res: Response): Promise<Response> => {
+userRouter.get('/', async (req: Request, res: Response): Promise<Response> => {
   const { email } = req.query;
 
   try {
@@ -61,7 +61,7 @@ userRouter.post("/", async (req: Request, res: Response): Promise<Response> => {
 
 // Rota post para login (Sign In)
 userRouter.post(
-  "/login",
+  '/login',
   async (req: Request, res: Response): Promise<Response> => {
     const { email, password } = req.body;
 
@@ -94,7 +94,7 @@ userRouter.post(
 );
 
 // Rota POST para verificar um token de sessão
-userRouter.post("/verify-token", (req: Request, res: Response) => {
+userRouter.post('/verify-token', (req: Request, res: Response) => {
   const token = req.body.token;
 
   if (!token) {
@@ -113,7 +113,7 @@ userRouter.post("/verify-token", (req: Request, res: Response) => {
 
 // Rota para atualizar um usuário
 userRouter.put(
-  "/:id",
+  '/:id',
   async (req: Request, res: Response): Promise<Response> => {
     const { id } = req.params; // Obtém o id da url
     const userData: IUser = req.body; // Obtém os dados do corpo da requisição
@@ -131,7 +131,7 @@ userRouter.put(
 
 // Remover um usuário
 userRouter.delete(
-  "/:id",
+  '/:id',
   async (req: Request, res: Response): Promise<Response> => {
     const { id } = req.params;
 
