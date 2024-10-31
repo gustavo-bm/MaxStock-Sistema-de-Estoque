@@ -1,8 +1,8 @@
 import { createContext, ReactNode, useContext, useState, useCallback, useEffect } from "react";
-import { getProducts, createProduct, updateProductData } from "../services/ProductService";
+import { getProducts, createProduct, updateProductData, removeProductFromDatabase } from "../services/ProductService";
 
 export default interface Product {
-    id: number;
+    id?: number;
     image: string;
     name: string;
     description: string;
@@ -14,6 +14,7 @@ interface ProductsContextType {
     getProductsList: () => Promise<Product[]>;
     addProduct: (product: Product) => Promise<void>;
     updateProduct: (product: Product) => Promise<void>;
+    removeProduct: (id: number) => Promise<void>;
     products: Product[] | null;
 }
 
@@ -56,13 +57,20 @@ export const ProductsProvider: React.FC<ProductsContextProps> = ({ children }) =
         }
     }, []);
     
+    const removeProduct = async (id: number ) => {
+        await removeProductFromDatabase(id);
+
+        setProducts((prevProducts) =>
+            prevProducts ? prevProducts.filter((product) => product.id !== id) : null
+        );
+    }
 
     useEffect(() => {
         console.log("Updated products: ", products);
     }, [products]);
 
     return (
-        <ProductsContext.Provider value={{ getProductsList, addProduct, updateProduct, products }}>
+        <ProductsContext.Provider value={{ getProductsList, addProduct, updateProduct, removeProduct, products }}>
             {children}
         </ProductsContext.Provider>
     );

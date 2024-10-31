@@ -2,7 +2,7 @@ import { Button, FormLabel, Paper, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useProducts } from "../../contexts/ProductsContext";
 
-const EditProduct: React.FC<{ setEdit: (value: boolean) => void, productId: number }> = ({ setEdit, productId }) => {
+const EditProduct: React.FC<{ setEdit: (value: boolean) => void, productId: number | undefined }> = ({ setEdit, productId }) => {
     const { products, updateProduct } = useProducts();
     const [product, setProduct] = useState(() => products?.find((p) => p.id === productId) || {
         id: productId,

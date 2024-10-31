@@ -22,11 +22,12 @@ const getProducts = async () => {
 };
 
 // Ajuste a função updateProductData
-const updateProductData = async (
-  updatedProduct: Product
-) => {
+const updateProductData = async (updatedProduct: Product) => {
   try {
-    const updatedProductResponse = await api.patch(`/products/${updatedProduct.id}`, updatedProduct);
+    const updatedProductResponse = await api.patch(
+      `/products/${updatedProduct.id}`,
+      updatedProduct
+    );
     return updatedProductResponse.data;
   } catch (error) {
     console.error("Erro ao atualizar produto", error);
@@ -34,5 +35,12 @@ const updateProductData = async (
   }
 };
 
+const removeProductFromDatabase = async (id: number) => {
+  try {
+    await api.delete(`/products/${id}`);
+  } catch (error : any) {
+    console.error('Erro ao remover product', error.message);
+  }
+};
 
-export { createProduct, getProducts, updateProductData };
+export { createProduct, getProducts, updateProductData, removeProductFromDatabase };

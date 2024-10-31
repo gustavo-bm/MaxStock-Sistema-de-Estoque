@@ -6,8 +6,8 @@ import { useNavigate } from 'react-router-dom';
 import EditProduct from './EditProduct';
 
 export default function ProductsList() {
-    const { products, getProductsList } = useProducts();
-    const [productId, setProductId] = useState<number | null>(null);
+    const { products, getProductsList, removeProduct } = useProducts();
+    const [productId, setProductId] = useState<number | undefined>(undefined);
     const [edit, setEdit] = useState<boolean>(false);
     const navigate = useNavigate();
 
@@ -19,9 +19,13 @@ export default function ProductsList() {
         }
     }, [products, getProductsList]);
 
-    const handleEdit = (id: number) => {
+    const handleEdit = (id: number | undefined) => {
         setProductId(id);
         setEdit(true);
+    };
+
+    const handleDeletion = (id: number) => {
+        removeProduct(id);
     };
 
     return (
@@ -41,6 +45,9 @@ export default function ProductsList() {
                             <p>Quantity: {product.quantity}</p>
                             <Button onClick={() => handleEdit(product.id)}>
                                 Edit
+                            </Button>
+                            <Button onClick={() => handleDeletion(product.id!)}>
+                                Delete
                             </Button>
                         </Box>
                     ))

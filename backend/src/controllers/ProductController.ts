@@ -82,7 +82,7 @@ productRouter.delete(
     if (deleted) {
       return res.status(204).send(); // Retorna "204 No Content" se a exclusão for bem-sucedida
     } else {
-      return res.status(404).json({ message: "Usuário não encontrado." });
+      return res.status(404).json({ message: "Produto não encontrado." });
     }
   }
 )
