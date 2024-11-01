@@ -6,7 +6,7 @@ const api = axios.create({
 });
 
 const createProduct = async (productData: {
-  image: string;
+  image: string | null;
   name: string;
   description: string;
   price: number;
@@ -28,6 +28,7 @@ const updateProductData = async (updatedProduct: Product) => {
       `/products/${updatedProduct.id}`,
       updatedProduct
     );
+    console.log(updatedProductResponse);
     return updatedProductResponse.data;
   } catch (error) {
     console.error("Erro ao atualizar produto", error);

@@ -10,7 +10,7 @@ const EditProduct: React.FC<{ setEdit: (value: boolean) => void, productId: numb
         description: "",
         price: 0,
         quantity: 0,
-        image: ""
+        image: null
     });
 
     // Sincroniza o estado do produto quando os produtos mudam

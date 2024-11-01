@@ -1,12 +1,13 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Blob } from "buffer";
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity('products')
 class Product {
     @PrimaryGeneratedColumn('increment')
     id: number
 
-    @Column('blob', { nullable: true})
-    image: Buffer
+    @Column('varchar', { nullable: true})
+    image: string
 
     @Column('varchar', { length: 100, nullable: false})
     name: string

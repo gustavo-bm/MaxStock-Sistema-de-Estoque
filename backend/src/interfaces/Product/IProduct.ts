@@ -1,6 +1,8 @@
+import { Blob } from "buffer";
+
 interface IProduct {
     id?: number;
-    image?: Buffer;
+    image?: string;
     name: string;
     description?: string;
     price: number;

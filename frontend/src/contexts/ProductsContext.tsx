@@ -3,7 +3,7 @@ import { getProducts, createProduct, updateProductData, removeProductFromDatabas
 
 export default interface Product {
     id?: number;
-    image: string;
+    image: string | null;
     name: string;
     description: string;
     price: number;
@@ -37,10 +37,14 @@ export const ProductsProvider: React.FC<ProductsContextProps> = ({ children }) =
     }, [products]);
 
     const addProduct = useCallback(async (newProduct: Product) => {
-        await createProduct(newProduct);
-        setProducts((prevProducts) => prevProducts ? [...prevProducts, newProduct] : [newProduct]);
+        const createdProduct = await createProduct({
+            ...newProduct,
+            image: newProduct.image ? newProduct.image : null
+        });
+    
+        setProducts((prevProducts) => prevProducts ? [...prevProducts, createdProduct] : [createdProduct]);
     }, []);
-
+    
     const updateProduct = useCallback(async (updatedProductInfo: Product) => {
         const updatedProduct = await updateProductData(updatedProductInfo);
         
