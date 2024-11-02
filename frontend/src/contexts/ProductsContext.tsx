@@ -69,10 +69,6 @@ export const ProductsProvider: React.FC<ProductsContextProps> = ({ children }) =
         );
     }
 
-    useEffect(() => {
-        console.log("Updated products: ", products);
-    }, [products]);
-
     return (
         <ProductsContext.Provider value={{ getProductsList, addProduct, updateProduct, removeProduct, products }}>
             {children}

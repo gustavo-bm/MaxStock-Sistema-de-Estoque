@@ -19,7 +19,6 @@ const EditProduct: React.FC<{ setEdit: (value: boolean) => void, productId: numb
         if (foundProduct) {
             setProduct(foundProduct);
         }
-        console.log(product.image);
     }, [products, productId]);
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
