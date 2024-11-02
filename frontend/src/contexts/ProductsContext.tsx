@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useContext, useState, useCallback, useEffect } from "react";
+import { createContext, ReactNode, useContext, useState, useCallback } from "react";
 import { getProducts, createProduct, updateProductData, removeProductFromDatabase } from "../services/ProductService";
 
 export default interface Product {
