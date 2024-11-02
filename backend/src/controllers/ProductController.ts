@@ -12,7 +12,7 @@ productRouter.get('/', async (req: Request, res: Response) => {
     return res.status(200).json(products);
   } catch (error) {
     console.error("Erro ao buscar usuário(s):", error);
-    return res.status(500).json({ message: "Erro ao buscar usuário(s)." });
+    return res.status(500).json({ message: "Erro ao buscar produto(s)." });
   }
 });
 

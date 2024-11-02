@@ -32,8 +32,15 @@ export class CreateProductsTable1730304442738 implements MigrationInterface {
           },
           {
             name: "image",
-            type: "blob",
+            type: "varchar",
+            length: "255",
             isNullable: true,
+          },
+          {
+            name: "quantity",
+            type: "int",
+            isNullable: false,
+            default: 0,
           },
         ],
       })

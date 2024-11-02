@@ -3,7 +3,7 @@ import { getProducts, createProduct, updateProductData, removeProductFromDatabas
 
 export default interface Product {
     id?: number;
-    image: string | null;
+    image: string;
     name: string;
     description: string;
     price: number;

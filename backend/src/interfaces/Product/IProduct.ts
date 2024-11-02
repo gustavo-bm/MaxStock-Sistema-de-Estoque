@@ -1,5 +1,3 @@
-import { Blob } from "buffer";
-
 interface IProduct {
     id?: number;
     image?: string;
