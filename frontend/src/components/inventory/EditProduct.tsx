@@ -22,10 +22,6 @@ const EditProduct: React.FC<{ setEdit: (value: boolean) => void, productId: numb
         }
     }, [products, productId]);
 
-    useEffect(() => {
-        console.log("Produto com campo alterado: ", product);
-    }, [product]);
-
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
             setImageFile(e.target.files[0]);
@@ -34,6 +30,7 @@ const EditProduct: React.FC<{ setEdit: (value: boolean) => void, productId: numb
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
+
         setProduct((prevProduct) => ({
             ...prevProduct,
             [name]: name === "price" || name === "quantity" ? parseFloat(value) : value
@@ -54,20 +51,18 @@ const EditProduct: React.FC<{ setEdit: (value: boolean) => void, productId: numb
             });
 
             const text = await response.text();
-            console.log('Response Text:', text);
 
             try {
                 const data = JSON.parse(text);
-                imagePath = data.imagePath; // Caminho da imagem retornado pelo servidor
+                imagePath = data.imagePath;
             } catch (error) {
                 console.error('Erro ao parsear JSON:', error);
             }
         }
 
         try {
-            // Corrigido: estrutura correta do novo produto
             const updatedProduct = {
-                id: productId, // Certifique-se de passar o ID do produto que está sendo atualizado
+                id: productId, 
                 name: product.name,
                 description: product.description,
                 price: product.price,
@@ -75,8 +70,7 @@ const EditProduct: React.FC<{ setEdit: (value: boolean) => void, productId: numb
                 image: imagePath || product.image
             };
 
-            await updateProduct(updatedProduct); // Chama a função de atualização com o novo produto
-            console.log("Produto atualizado:", updatedProduct); // Log correto do produto atualizado
+            await updateProduct(updatedProduct);
         } catch (error: any) {
             console.error("Erro ao atualizar produto", error.message);
         }

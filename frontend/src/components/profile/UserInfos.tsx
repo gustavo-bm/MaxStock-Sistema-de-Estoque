@@ -11,7 +11,7 @@ export default function UserInfos() {
         setUser(auth?.user);
     }, [auth]);
     if (!user) {
-        return <Typography>Loading user information...</Typography>; // Mensagem de carregamento
+        return <Typography>Loading user information...</Typography>;
     }
 
     return (

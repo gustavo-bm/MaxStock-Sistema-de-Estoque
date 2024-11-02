@@ -15,7 +15,9 @@ function App() {
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/app" element={<ProtectedRoute><UserProfilePage /></ProtectedRoute>} />
       <Route path="/app/inventory" element={<ProtectedRoute><InventoryPage /></ProtectedRoute>} />
-      <Route path="/app/inventory" element={<ProtectedRoute><AddProductForm /></ProtectedRoute>} />
+      <Route path="/app/inventory" element={<ProtectedRoute><AddProductForm setAddForm={function (value: boolean): void {
+        throw new Error('Function not implemented.');
+      } } /></ProtectedRoute>} />
     </Routes>
 
   )

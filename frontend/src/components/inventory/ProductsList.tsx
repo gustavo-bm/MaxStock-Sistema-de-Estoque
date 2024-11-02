@@ -39,8 +39,8 @@ export default function ProductsList() {
                             {product.image && <img src={`http://localhost:3333${product.image}`} alt={product.name} className="product-image" />}
                             <Typography variant='h4' align='justify'>{product.name}</Typography>
                             <Typography sx={{ fontSize: '18px' }} align='center'>{product.description}</Typography>
-                            <Typography sx={{ fontSize: '18px' }} align='center'>Preço: ${Number(product.price).toFixed(2)}</Typography>
-                            <Typography sx={{ fontSize: '18px' }} align='center'>Quantidade: {product.quantity}</Typography>
+                            <Typography sx={{ fontSize: '18px' }} align='center'>${Number(product.price).toFixed(2)}</Typography>
+                            <Typography sx={{ fontSize: '18px' }} align='center'>Quantity: {product.quantity}</Typography>
                             <Button onClick={() => handleEdit(product.id)}>Edit</Button>
                             <Button onClick={() => handleDeletion(product.id!)}>Delete</Button>
                         </Paper>

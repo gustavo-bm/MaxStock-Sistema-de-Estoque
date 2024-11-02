@@ -29,13 +29,10 @@ const AddProductForm: React.FC<{ setAddForm: (value: boolean) => void }> = ({ se
                 body: formData,
             });
     
-            // Adicione esta linha para verificar o que está retornando
             const text = await response.text();
-            console.log('Response Text:', text); // Log da resposta como texto
-    
-            // Agora tente fazer o parse do JSON
+
             try {
-                const data = JSON.parse(text); // Tente converter o texto em JSON
+                const data = JSON.parse(text); // Converter o texto em JSON para acessar informações
                 imagePath = data.imagePath; // Caminho da imagem retornado pelo servidor
             } catch (error) {
                 console.error('Erro ao parsear JSON:', error);
@@ -45,17 +42,10 @@ const AddProductForm: React.FC<{ setAddForm: (value: boolean) => void }> = ({ se
         try {
             const newProduct = { name, description, price, quantity, image: imagePath };
             await addProduct(newProduct);
-            console.log('Created product:', newProduct);
         } catch (error: any) {
             console.error('Erro ao cadastrar produto', error.message);
         }
-    
-        // Resetando o estado do formulário
-        setName("");
-        setDescription("");
-        setPrice(0);
-        setQuantity(0);
-        setImageFile(null);
+        
         setAddForm(false);
     };    
 

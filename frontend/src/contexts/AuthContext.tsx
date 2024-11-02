@@ -11,7 +11,7 @@ interface User {
 interface AuthContextType {
     isAuthenticated: boolean;
     login: (email: string) => Promise<void>;
-    logout: () => boolean;
+    logout: () => void;
     user: User | null;
 }
 
@@ -46,7 +46,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     const login = async (email: string) => {
         try {
-            // Chama a função para buscar as informações do usuário
             const userInfo = await getUserInfo(email);
             setUser(userInfo);
             setIsAuthenticated(true);
@@ -56,15 +55,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         }
     }
 
-    const logout = (): boolean => {
+    const logout = () => {
         try {
             localStorage.removeItem('token');
             setIsAuthenticated(false);
             navigate('/login');
-            return true;
         } catch (error) {
             console.error("Erro ao realizar logout:", error);
-            return false;
         }
     };
 

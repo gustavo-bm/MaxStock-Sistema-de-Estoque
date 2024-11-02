@@ -21,7 +21,6 @@ const getProducts = async () => {
   return products.data;
 };
 
-// Ajuste a função updateProductData
 const updateProductData = async (updatedProduct: Product) => {
   try {
     const updatedProductResponse = await api.patch(

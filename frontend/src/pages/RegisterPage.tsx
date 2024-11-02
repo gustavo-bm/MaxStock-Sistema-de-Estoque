@@ -1,4 +1,3 @@
-// form para se registrar 
 import { Box } from '@mui/material';
 import RegisterForm from '../components/register/RegisterForm';
 

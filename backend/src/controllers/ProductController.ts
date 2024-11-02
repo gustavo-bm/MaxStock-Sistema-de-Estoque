@@ -44,7 +44,7 @@ productRouter.patch('/:product_id', async (req: Request, res: Response) => {
   const product_id = parseInt(req.params.product_id, 10);
   const updates: Partial<Product> = req.body;
 
-  console.log("Dados recebidos para atualização:", updates); // Adicionando log
+  console.log("Dados recebidos para atualização:", updates);
 
   if (updates.quantity !== undefined && (isNaN(updates.quantity) || updates.quantity < 0)) {
       return res.status(400).json({ message: "Quantidade inválida" });

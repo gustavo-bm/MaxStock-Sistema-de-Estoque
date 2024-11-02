@@ -17,7 +17,7 @@ const upload = multer({ storage });
 
 // Rota de upload de imagem
 uploadRouter.post('/uploads', upload.single('image'), (req, res) => {
-    console.log("Arquivo salvo em:", req.file?.path); // Exibe o caminho completo do arquivo
+    console.log("Arquivo salvo em:", req.file?.path); // Exibe o caminho completo do arquivo no terminal
 
     if (!req.file) {
         return res.status(400).json({ error: 'No file uploaded' });

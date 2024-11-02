@@ -27,7 +27,6 @@ const LoginForm: React.FC = () => {
 
             localStorage.setItem('token', token);
             
-            console.log('User logged sucessfully. Token received: ', token);
             navigate('/app'); // Redireciona para a aplicação após o login bem-sucedido
         } catch (error: any) {
             console.error("Erro ao fazer login:", error.response || error);
