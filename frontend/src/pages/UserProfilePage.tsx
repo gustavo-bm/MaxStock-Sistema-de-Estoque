@@ -7,19 +7,31 @@ export default function UserProfilePage() {
   const auth = useAuth();
   const navigate = useNavigate();
 
-    const handleLogout = () => {
-      auth?.logout();
-    }
+  const handleLogout = () => {
+    auth?.logout();
+  }
 
   return (
     <Box>
-      <Button onClick={handleLogout}>
-        Logout
-      </Button>
       <UserInfos />
-      <Button onClick={() => {navigate('/app/inventory')}}>
-        Inventory
-      </Button>
+      <Box sx={{ display: 'flex', justifyContent: 'center', gap: '2em' }}>
+        <Button onClick={handleLogout}
+          variant="contained"
+          color="error"
+          sx={{
+            "&:hover": {
+              backgroundColor: "#FF6F61",
+              color: "inherit",
+            },
+          }}>
+          Logout
+        </Button>
+        <Button onClick={() => { navigate('/app/inventory') }}
+          variant="contained"
+          color="primary">
+          Inventory
+        </Button>
+      </Box>
     </Box>
   )
 }

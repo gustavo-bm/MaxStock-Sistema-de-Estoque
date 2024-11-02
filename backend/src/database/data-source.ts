@@ -6,7 +6,6 @@ import dotenv from 'dotenv';
 import Product from "../entities/Product";
 import { CreateProductsTable1730304442738 } from "./migrations/1730304442738-CreateProductsTable";
 
-// Carregar variáveis de ambiente do arquivo .env
 dotenv.config();
 
 export const AppDataSource = new DataSource({

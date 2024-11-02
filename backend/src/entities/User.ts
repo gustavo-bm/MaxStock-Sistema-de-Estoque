@@ -19,6 +19,9 @@ import {
 
       @Column('varchar', { length: 100, nullable: false })
       password: string;
+
+      @Column('varchar', { length: 200, nullable: false })
+      image: string;
   
       @CreateDateColumn()
       created_at: Date;

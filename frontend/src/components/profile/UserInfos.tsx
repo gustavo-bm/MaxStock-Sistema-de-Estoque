@@ -1,24 +1,25 @@
-// exibe foto, nome e email do usuário
-import React, { useEffect, useState } from 'react'
 import { useAuth } from '../../contexts/AuthContext';
-import { Paper, Typography } from '@mui/material';
+import { Typography, CircularProgress, Box } from '@mui/material';
 
-export default function UserInfos() {
+const UserInfos: React.FC = () => {
     const auth = useAuth();
-    const [user, setUser] = useState(auth?.user);
 
-    useEffect(() => {
-        setUser(auth?.user);
-    }, [auth]);
-    if (!user) {
-        return <Typography>Loading user information...</Typography>;
+    if (auth?.loading) {
+        return <CircularProgress />;
+    }
+
+    if (!auth?.user) {
+        return <Typography>Usuário não encontrado.</Typography>;
     }
 
     return (
-        <Paper sx={{ padding: '2em', textAlign: 'center' }}>
-            {/* <img src={user.photoUrl} alt={`${user.name}'s avatar`} style={{ borderRadius: '50%', width: '100px', height: '100px' }} />*/}
-            <Typography variant="h5">{user.name}</Typography>
-            <Typography variant="body1">{user.email}</Typography>
-        </Paper>
+        <Box sx={{ padding: '2em', textAlign: 'center' }}>
+            {auth?.user.image && <img src={`http://localhost:3333${auth?.user.image}`} alt={auth?.user.name} 
+                style={{ width: '25%', objectFit: 'cover', objectPosition: 'center' }} />}
+            <Typography variant="h5">{auth.user.name}</Typography>
+            <Typography variant="body1">{auth.user.email}</Typography>
+        </Box>
     );
 }
+
+export default UserInfos;

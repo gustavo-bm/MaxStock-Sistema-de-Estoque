@@ -34,6 +34,12 @@ export class CreateUsersTable1727265827543 implements MigrationInterface {
                         isNullable: false,
                     },
                     {
+                        name: 'image',
+                        type: 'varchar',
+                        length: '200',
+                        isNullable: false,
+                    },
+                    {
                         name: 'created_at',
                         type: 'timestamp',
                         default: 'now()',

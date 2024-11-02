@@ -20,7 +20,7 @@ userRouter.get('/', async (req: Request, res: Response): Promise<Response> => {
     if (email) {
       const user = await UserRepository.getUserInfoByEmail(email as string);
       if (!user) {
-        return res.status(404).json({ message: "Usuário não encontrado." });
+        return res.status(404).json({ message: "User not found." });
       }
       return res.status(200).json(user);
     }
@@ -29,20 +29,20 @@ userRouter.get('/', async (req: Request, res: Response): Promise<Response> => {
     const users = await UserRepository.getUsers();
     return res.status(200).json(users);
   } catch (error) {
-    console.error("Erro ao buscar usuário(s):", error);
-    return res.status(500).json({ message: "Erro ao buscar usuário(s)." });
+    console.error("Error finding user(s):", error);
+    return res.status(500).json({ message: "Error finding users." });
   }
 });
 
 // Rota POST para criar um usuário
 userRouter.post("/", async (req: Request, res: Response): Promise<Response> => {
-  const { name, email, password }: IUser = req.body;
+  const { name, email, password, image }: IUser = req.body;
 
   // Verifica se os dados necessários foram enviados
-  if (!name || !email || !password) {
+  if (!name || !email || !password ) {
     return res
       .status(400)
-      .json({ message: "Nome, email e senha são requeridos" });
+      .json({ message: "Name, email and password are required" });
   }
 
   try {
@@ -52,10 +52,11 @@ userRouter.post("/", async (req: Request, res: Response): Promise<Response> => {
       name,
       email,
       password: hashedPassword,
+      image
     });
-    return res.status(201).json(newUser); // Status 201 (criado)
+    return res.status(201).json(newUser);
   } catch (error) {
-    return res.status(500).json({ message: "Erro ao criar user", error });
+    return res.status(500).json({ message: "Error creating user", error });
   }
 });
 
@@ -68,27 +69,27 @@ userRouter.post(
     if (!email || !password) {
       return res
         .status(400)
-        .json({ message: "Email e senha são obrigatórios" });
+        .json({ message: "Email and password are required." });
     }
 
     try {
       const user = await UserRepository.getUserByEmail(email);
       if (!user) {
-        return res.status(404).json({ message: "Usuário não encontrado" });
+        return res.status(404).json({ message: "User not found." });
       }
 
       const isPasswordValid = await bcrypt.compare(password, user.password);
       if (!isPasswordValid) {
-        return res.status(401).json({ message: "Senha incorreta" });
+        return res.status(401).json({ message: "Incorrect password." });
       }
 
       const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
-        expiresIn: "1h",
+        expiresIn: "3h",
       });
       return res.status(200).json({ token });
     } catch (error) {
-      console.error("Erro no login", error);
-      return res.status(500).json({ message: "Erro no login", error });
+      console.error("Error signing in", error);
+      return res.status(500).json({ message: "Error signing in", error });
     }
   }
 );
@@ -98,7 +99,7 @@ userRouter.post('/verify-token', (req: Request, res: Response) => {
   const token = req.body.token;
 
   if (!token) {
-    return res.status(400).json({ message: "Token não fornecido" });
+    return res.status(400).json({ message: "Token not provided." });
   }
 
   try {
@@ -107,7 +108,7 @@ userRouter.post('/verify-token', (req: Request, res: Response) => {
   } catch (error) {
     return res
       .status(401)
-      .json({ valid: false, message: "Token inválido ou expirado" });
+      .json({ valid: false, message: "Invalid or expired token." });
   }
 });
 
@@ -124,7 +125,7 @@ userRouter.put(
     if (updatedUser) {
       return res.status(200).json(updatedUser);
     } else {
-      return res.status(404).json({ message: "Usuário não encontrado." });
+      return res.status(404).json({ message: "User not found." });
     }
   }
 );
@@ -140,7 +141,7 @@ userRouter.delete(
     if (deleted) {
       return res.status(204).send(); // Retorna "204 No Content" se a exclusão for bem-sucedida
     } else {
-      return res.status(404).json({ message: "Usuário não encontrado." });
+      return res.status(404).json({ message: "User not found." });
     }
   }
 );
