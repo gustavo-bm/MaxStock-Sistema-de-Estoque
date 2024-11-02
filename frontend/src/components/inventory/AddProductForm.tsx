@@ -71,8 +71,7 @@ const AddProductForm: React.FC<{ setAddForm: (value: boolean) => void }> = ({ se
                     maxWidth: "500px",
                     padding: "2em",
                     position: "relative",
-                    boxShadow: 5,
-                    zIndex: '5'
+                    boxShadow: 5
                 }}
                 elevation={10}
             >
@@ -98,7 +97,6 @@ const AddProductForm: React.FC<{ setAddForm: (value: boolean) => void }> = ({ se
                             gap: "1em",
                         }}
                     >
-                        {imageFile && <img src={URL.createObjectURL(imageFile)} alt="Preview" width="50%" />}
                         <Box sx={{ marginTop: '2em' }}>
                             <Button
                                 variant="contained"
@@ -111,10 +109,11 @@ const AddProductForm: React.FC<{ setAddForm: (value: boolean) => void }> = ({ se
                                 id="image-upload"
                                 type="file"
                                 accept="image/*"
-                                onChange={!imageFile ? handleImageChange : () => {}}
-                                style={{ display: 'none', width:'10px', height: '5px' }}
+                                onChange={handleImageChange}
+                                style={{ display: 'none', width:'10px', height: '5px', zIndex: '0' }}
                             />
                         </Box>
+                        {imageFile && <img src={URL.createObjectURL(imageFile)} alt="Preview" width="25%" />}
                         <TextField
                             fullWidth
                             variant="outlined"

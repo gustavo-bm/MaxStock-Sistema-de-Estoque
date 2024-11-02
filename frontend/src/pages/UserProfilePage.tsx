@@ -1,5 +1,5 @@
 import { Box, Button } from "@mui/material";
-import { useAuth } from "../contexts/AuthContext"
+import { useAuth } from "../contexts/AuthContext";
 import UserInfos from "../components/profile/UserInfos";
 import { useNavigate } from "react-router-dom";
 
@@ -9,12 +9,20 @@ export default function UserProfilePage() {
 
   const handleLogout = () => {
     auth?.logout();
-  }
+  };
 
   return (
-    <Box>
+    <Box 
+      sx={{
+        display: 'flex',           
+        flexDirection: 'column',    
+        justifyContent: 'center',   
+        alignItems: 'center',       
+        height: '100vh',           
+      }}
+    >
       <UserInfos />
-      <Box sx={{ display: 'flex', justifyContent: 'center', gap: '2em' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'center', gap: '2em', marginTop: '1em' }}>
         <Button onClick={handleLogout}
           variant="contained"
           color="error"
@@ -33,5 +41,5 @@ export default function UserProfilePage() {
         </Button>
       </Box>
     </Box>
-  )
+  );
 }

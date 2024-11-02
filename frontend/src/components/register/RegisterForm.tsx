@@ -1,4 +1,4 @@
-import { Button, FormLabel, Paper, TextField, Typography } from '@mui/material';
+import { Box, Button, Paper, TextField, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import { createUser } from '../../services/UserService';
 import { useNavigate } from 'react-router-dom';
@@ -25,12 +25,12 @@ const RegisterForm: React.FC = () => {
         if (imageFile) {
             const formData = new FormData();
             formData.append('image', imageFile);
-    
+
             const response = await fetch('http://localhost:3333/uploads/users', {
                 method: 'POST',
                 body: formData,
             });
-    
+
             const text = await response.text();
 
             try {
@@ -47,10 +47,7 @@ const RegisterForm: React.FC = () => {
             navigate('/login');
         } catch (error: any) {
             console.error("Error creating user:", error);
-
-            
             setError("Error creating user. Verify the fields and try again.");
-
             setTimeout(() => { 
                 setError('');
             }, 1500);
@@ -58,16 +55,27 @@ const RegisterForm: React.FC = () => {
     }
 
     return (
-        <Paper sx={{ p: 4, width: '100%', maxWidth: 400 }} elevation={10} >
-            <Typography sx={{ marginBottom: '2.5em', textAlign: 'center'}}>Create your account!</Typography>
-            <form onSubmit={handleSubmit}
-                style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: 20, // Margem vertical entre os campos
-                }}>
-                    <input type="file" accept="image/*" onChange={handleImageChange} />
-                    {imageFile && <img src={URL.createObjectURL(imageFile)} alt="Preview" width="100%" />}
+        <Paper sx={{ p: 4, width: '100%', maxWidth: 400 }} elevation={10}>
+            <Typography sx={{ marginBottom: '2.5em', textAlign: 'center' }}>Create your account!</Typography>
+            <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+                <Box sx={{ marginTop: '2em' }}>
+                    <Button
+                        variant="contained"
+                        component="span"
+                        color='primary'
+                        onClick={() => document.getElementById('image-upload')?.click()}
+                    >
+                        Escolher Imagem
+                    </Button>
+                    <input
+                        id="image-upload"
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageChange}
+                        style={{ display: 'none' }} // Esconder o input
+                    />
+                </Box>
+                {imageFile && <img src={URL.createObjectURL(imageFile)} alt="Preview" width="100%" />}
                 <TextField
                     fullWidth
                     variant="outlined"
