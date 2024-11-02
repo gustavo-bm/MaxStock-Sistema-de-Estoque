@@ -25,7 +25,6 @@ export default function ProductsList() {
     const handleDeletion = (id: number) => {
         removeProduct(id);
     };
-    
 
     return (
         <Box>

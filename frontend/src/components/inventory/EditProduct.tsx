@@ -4,13 +4,14 @@ import { useProducts } from "../../contexts/ProductsContext";
 
 const EditProduct: React.FC<{ setEdit: (value: boolean) => void, productId: number | undefined }> = ({ setEdit, productId }) => {
     const { products, updateProduct } = useProducts();
+    const [imageFile, setImageFile] = useState<File | null>(null);
     const [product, setProduct] = useState(() => products?.find((p) => p.id === productId) || {
         id: productId,
         name: "",
         description: "",
         price: 0,
         quantity: 0,
-        image: null
+        image: ""
     });
 
     // Sincroniza o estado do produto quando os produtos mudam
@@ -25,6 +26,12 @@ const EditProduct: React.FC<{ setEdit: (value: boolean) => void, productId: numb
         console.log("Produto com campo alterado: ", product);
     }, [product]);
 
+    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files[0]) {
+            setImageFile(e.target.files[0]);
+        }
+    };
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setProduct((prevProduct) => ({
@@ -35,14 +42,48 @@ const EditProduct: React.FC<{ setEdit: (value: boolean) => void, productId: numb
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        let imagePath = '';
+        if (imageFile) {
+            const formData = new FormData();
+            formData.append('image', imageFile);
+
+            const response = await fetch('http://localhost:3333/uploads', {
+                method: 'POST',
+                body: formData,
+            });
+
+            const text = await response.text();
+            console.log('Response Text:', text);
+
+            try {
+                const data = JSON.parse(text);
+                imagePath = data.imagePath; // Caminho da imagem retornado pelo servidor
+            } catch (error) {
+                console.error('Erro ao parsear JSON:', error);
+            }
+        }
+
         try {
-            await updateProduct(product);
-            console.log("Produto atualizado:", product);
+            // Corrigido: estrutura correta do novo produto
+            const updatedProduct = {
+                id: productId, // Certifique-se de passar o ID do produto que está sendo atualizado
+                name: product.name,
+                description: product.description,
+                price: product.price,
+                quantity: product.quantity,
+                image: imagePath || product.image
+            };
+
+            await updateProduct(updatedProduct); // Chama a função de atualização com o novo produto
+            console.log("Produto atualizado:", updatedProduct); // Log correto do produto atualizado
         } catch (error: any) {
             console.error("Erro ao atualizar produto", error.message);
         }
+
         setEdit(false);
     };
+
 
     return (
         <Paper
@@ -70,15 +111,12 @@ const EditProduct: React.FC<{ setEdit: (value: boolean) => void, productId: numb
                         gap: "1em"
                     }}
                 >
-                    <TextField
-                        fullWidth
-                        variant="outlined"
-                        label="Image URL"
-                        name="image"
-                        type="text"
-                        value={product.image}
-                        onChange={handleChange}
-                    />
+                    {imageFile ? (
+                        <img src={URL.createObjectURL(imageFile)} alt="Preview" width="100%" />
+                    ) : product.image && (
+                        <img src={`http://localhost:3333${product.image}`} alt={product.name} className="product-image" />
+                    )}
+                    <input type="file" accept="image/*" onChange={handleImageChange} />
                     <TextField
                         fullWidth
                         variant="outlined"
