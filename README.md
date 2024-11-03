@@ -87,7 +87,7 @@ backend
 1. Clone o repositório:
 
    ```bash
-   git clone https://github.com/gustavo-bm/Projeto-CRUD-com-TypeScript
+   git clone https://github.com/gustavo-bm/MaxStock-Sistema-de-Estoque
    cd crud_basico
    ```
 
