@@ -1,9 +1,11 @@
-import { Box, Typography } from "@mui/material";
+import { Box, useMediaQuery } from "@mui/material";
 import LoginForm from "../components/login";
 import inventoryImage from "../assets/InventoryImage.jpg";
 import maxStockLogo from "../assets/max_stock_logo.png";
 
 const LoginPage: React.FC = () => {
+  const isMediumScreen = useMediaQuery('(max-width:1200px)');
+
   return (
     <Box sx={{ display: "flex", height: "100vh", flexDirection: { xs: "column", md: "row" } }}>
       <Box
@@ -19,9 +21,12 @@ const LoginPage: React.FC = () => {
           src={inventoryImage}
           alt="Inventory"
           style={{
-            height: '90vh',
+            width: '100%',
+            height: '100%',
+            maxHeight: '90vh',
             borderRadius: '15px',
             boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.5)',
+            objectFit: 'cover',
           }}
         />
       </Box>
@@ -30,7 +35,7 @@ const LoginPage: React.FC = () => {
         sx={{
           display: 'flex',
           flexDirection: 'column',
-          gap: '15vh',
+          gap: '5vw',
           alignItems: 'center',
           justifyContent: 'center',
           width: { xs: '100%', md: '50%' },
@@ -41,7 +46,7 @@ const LoginPage: React.FC = () => {
           src={maxStockLogo}
           alt="Inventory"
           style={{
-            height: '15vh',
+            height: isMediumScreen ? '10vh' : '15vh',
             borderRadius: '15px',
           }}
         />

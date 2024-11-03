@@ -1,5 +1,5 @@
 import './App.css';
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import UserProfilePage from './pages/UserProfilePage';
@@ -22,8 +22,8 @@ function App() {
         styleOverrides: {
           root: {
             '&:hover': {
-              backgroundColor: '#6DA2A8', // Cor de fundo ao passar o mouse
-              color: '#ffffff', // Cor do texto ao passar o mouse
+              backgroundColor: '#6DA2A8',
+              color: '#ffffff',
             },
           },
         },
@@ -34,6 +34,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <Routes>
+        <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/app" element={<ProtectedRoute><UserProfilePage /></ProtectedRoute>} />
