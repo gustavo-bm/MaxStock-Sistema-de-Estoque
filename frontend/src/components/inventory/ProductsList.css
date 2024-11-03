@@ -1,31 +1,31 @@
 .products-grid {
     display: flex;
-    flex-wrap: wrap; /* Allows items to wrap onto the next line */
-    justify-content: center; /* Centers the items */
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .product-card {
-    width: 250px; /* Fixed width */
-    height: 350px; /* Fixed height */
-    margin: 10px; /* Optional: adds spacing between cards */
-    display: flex; /* Allows for flexbox properties */
-    flex-direction: column; /* Stacks child elements vertically */
-    justify-content: space-between; /* Distributes space between items */
-    overflow: hidden; /* Prevents overflow from content */
+    width: 250px;
+    height: 350px;
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
 }
 
 .product-image {
     align-self: center;
-    max-width: 50%; /* Ensures the image scales with the card */
-    max-height: 150px; /* Limits image height */
+    max-width: 50%;
+    max-height: 150px;
     margin-top: 1em;
     border-radius: 1em;
-    object-fit: cover; /* Keeps the aspect ratio of the image */
+    object-fit: cover;
 }
 
 @media (max-width: 600px) {
     .product-card {
-        width: 100%; /* Full width on small screens */
-        height: auto; /* Height will adjust based on content */
+        width: 100%;
+        height: auto;
     }
 }

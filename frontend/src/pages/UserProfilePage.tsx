@@ -1,7 +1,7 @@
 import { Box, Button, Paper } from "@mui/material";
 import { useAuth } from "../contexts/AuthContext";
-import UserInfos from "../components/profile/UserInfos";
 import { useNavigate } from "react-router-dom";
+import UserInfos from "../components/profile/UserInfos";
 
 export default function UserProfilePage() {
   const auth = useAuth();
