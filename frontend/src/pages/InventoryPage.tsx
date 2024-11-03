@@ -8,10 +8,10 @@ export default function InventoryPage() {
 
   return (
     <Paper sx={{
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      justifyItems: "center",
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyItems: 'center',
       padding: '2em',
       margin: '2em 2em 2em 2em',
       backgroundColor: '#8FC0C7'

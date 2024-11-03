@@ -1,4 +1,4 @@
-import { Box, Button } from "@mui/material";
+import { Box, Button, Paper } from "@mui/material";
 import { useAuth } from "../contexts/AuthContext";
 import UserInfos from "../components/profile/UserInfos";
 import { useNavigate } from "react-router-dom";
@@ -12,13 +12,16 @@ export default function UserProfilePage() {
   };
 
   return (
-    <Box 
+    <Paper
       sx={{
-        display: 'flex',           
-        flexDirection: 'column',    
-        justifyContent: 'center',   
-        alignItems: 'center',       
-        height: '100vh',           
+        height: '80vh',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyItems: "center",
+        padding: '2em',
+        margin: '2em 2em 2em 2em',
+        backgroundColor: '#8FC0C7'
       }}
     >
       <UserInfos />
@@ -40,6 +43,6 @@ export default function UserProfilePage() {
           Inventory
         </Button>
       </Box>
-    </Box>
+    </Paper>
   );
 }
